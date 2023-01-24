@@ -40,13 +40,18 @@ app.get('/info', (request, response) => {
     return response.send(`<p> Phonebook has info for ${ppl} people</p><p>${datetime}</p>`)
   })
 
-
-  app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     const person = persons.find(p => p.id === id)
-    response.json(person)
-  })
 
+    if (person) {
+        response.json(person)
+    } else {
+        response.send(`<p>Sorry, id not found. Error 404 - Not Found</p>`)
+        response.status(404).end()
+    }
+  }
+)
 
 const PORT = 3001
 app.listen(PORT)
