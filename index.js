@@ -34,10 +34,17 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
-app.get('/api/info', (request, response) => {
+app.get('/info', (request, response) => {
     const datetime = new Date()
     const ppl = persons.filter(x => x.id).length
     return response.send(`<p> Phonebook has info for ${ppl} people</p><p>${datetime}</p>`)
+  })
+
+
+  app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const person = persons.find(p => p.id === id)
+    response.json(person)
   })
 
 
