@@ -38,7 +38,8 @@ app.get('/info', (request, response) => {
     const datetime = new Date()
     const ppl = persons.filter(x => x.id).length
     return response.send(`<p> Phonebook has info for ${ppl} people</p><p>${datetime}</p>`)
-  })
+  }
+)
 
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
@@ -52,6 +53,12 @@ app.get('/api/persons/:id', (request, response) => {
     }
   }
 )
+
+app.delete('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    persons = persons.filter(person => person.id == id)
+    response.status(204).end()
+  })
 
 const PORT = 3001
 app.listen(PORT)
