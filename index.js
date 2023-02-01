@@ -26,8 +26,6 @@ let persons = [
     }
 ]
 
-
-
 app.get('/', (request, response) => {
     response.send(`<h1>Hello World</h1>`)
   })
@@ -63,17 +61,28 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
   })
 
-  app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response) => {
+    const names = persons.map(person => person.name)
     const generateId = Math.ceil(Math.random() * 10000)
     const body = request.body
+
+    if (!body.name || !body.number) {
+      return response.status(404).json({
+        error: 'content missing'
+      })
+    }
+
+    if (names.includes(body.name)) {
+      return response.status(400).json({
+        error: 'name must be unique'
+      })
+    }
     const person = {
         id: generateId,
         name: body.name,
         number: body.number || false
     }
-
     persons = persons.concat(person)
-
     response.json(person)
   })
 
