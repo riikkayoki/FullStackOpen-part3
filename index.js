@@ -26,6 +26,8 @@ let persons = [
     }
 ]
 
+
+
 app.get('/', (request, response) => {
     response.send(`<h1>Hello World</h1>`)
   })
@@ -43,10 +45,10 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    const person = persons.find(p => p.id === id)
+    const find_person = persons.find(p => p.id === id)
 
-    if (person) {
-        response.json(person)
+    if (find_person) {
+        response.json(find_person)
     } else {
         response.send(`<p>Sorry, id not found. Error 404 - Not Found</p>`)
         response.status(404).end()
@@ -56,8 +58,23 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    persons = persons.filter(person => person.id == id)
+    console.log(id)
+    persons = persons.filter(person => person.id !== id)
     response.status(204).end()
+  })
+
+  app.post('/api/persons', (request, response) => {
+    const generateId = Math.ceil(Math.random() * 10000)
+    const body = request.body
+    const person = {
+        id: generateId,
+        name: body.name,
+        number: body.number || false
+    }
+
+    persons = persons.concat(person)
+
+    response.json(person)
   })
 
 const PORT = 3001
